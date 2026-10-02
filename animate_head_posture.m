@@ -68,29 +68,13 @@ function out_file = animate_head_posture(eul1, eul2, name1, name2, varargin)
 %     at t = 0; the shorter one freezes at its end.
 %   Needs base MATLAB only (R2020b+ for tiledlayout features; no toolboxes).
 %
-% Standalone example with data: example_animate_head_posture.m (this folder).
-%
-% EXAMPLE with dual task walking data (run from src/, with this folder on
-% the path, e.g. via main.m's addpath(genpath(pwd))): Go/No-Go vs walking
-% only, first epoch each, standing baseline = the 10-s standing phase before
-% each of the two epochs (1-9 s after the stand_start marker; note that
-% inspect_head_posture.m pools ALL standing phases of the subject instead)
-%   subj = 'recording_name_here';
-%   f = load(fullfile('data', 'ana02_filtered', ['filtered_' subj '.mat']), ...
-%       'euler_angles_raw', 'timestamps', 'presentation_data');
-%   t = f.timestamps(:);  eul = f.euler_angles_raw;
-%   g = load(fullfile('data', 'ana03_epochs', 'gng_epochs.mat'));
-%   g = g.cond_epochs(strcmp({g.cond_epochs.rec_name}, subj));
-%   w = load(fullfile('data', 'ana03_epochs', 'walking_only_epochs.mat'));
-%   w = w.cond_epochs(strcmp({w.cond_epochs.rec_name}, subj));
-%   mk = cellfun(@(v) char(string(v)), f.presentation_data.time_series, 'UniformOutput', false);
-%   ts = f.presentation_data.time_stamps(endsWith(mk, 'stand_start'));
-%   pre  = @(ep) ts(find(ts < ep.t_start - 1, 1, 'last'));
-%   base = arrayfun(@(ep) eul(t >= pre(ep) + 1 & t <= pre(ep) + 9, :), [g(1) w(1)], 'UniformOutput', false);
-%   in = @(ep) t >= ep.t_start & t <= ep.t_end;
-%   animate_head_posture(eul(in(g(1)), :), eul(in(w(1)), :), 'Go/No-Go', 'Walking only', ...
-%       'time1', t(in(g(1))), 'time2', t(in(w(1))), 'baseline', base, 'title', subj, ...
-%       'out_file', fullfile('results', 'head_posture_animation', [subj '_gng_vs_walking_only']));
+% EXAMPLES (this repository):
+%   example_animate_head_posture.m  runs this function on the example data
+%                                   in example_data/ (CSV, one file per
+%                                   condition + standing baselines)
+%   xdf_to_example_data.m           converts your own XDF recording
+%                                   (Movella DOT + Presentation markers)
+%                                   into that CSV structure
 
 p = inputParser;
 p.addParameter('fs', []);
